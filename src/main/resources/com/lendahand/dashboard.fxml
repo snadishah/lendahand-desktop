@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.DashboardController"
+            style="-fx-background-color:#F7F6F2;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:0 24 0 24; -fx-pref-height:64px;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 2 0;
+                     -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);">
+            <Label text="🤝" style="-fx-font-size:28px;"/>
+            <Label text="LendAHand"
+                   style="-fx-text-fill:#1E293B; -fx-font-size:20px; -fx-font-weight:bold;"/>
+            <HBox spacing="6" alignment="CENTER" style="-fx-padding:0 10;">
+                <Label text="●" style="-fx-text-fill:#FF6B6B; -fx-font-size:8px;"/>
+                <Label text="●" style="-fx-text-fill:#4ECDC4; -fx-font-size:8px;"/>
+                <Label text="●" style="-fx-text-fill:#FFD166; -fx-font-size:8px;"/>
+            </HBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <VBox alignment="CENTER_RIGHT" spacing="1">
+                <Label fx:id="welcomeLabel" text="Welcome"
+                       style="-fx-text-fill:#1E293B; -fx-font-size:13px; -fx-font-weight:bold;"/>
+                <Label fx:id="roleLabel" text=""
+                       style="-fx-text-fill:#FF6B6B; -fx-font-size:10px; -fx-font-weight:bold;"/>
+            </VBox>
+            <Button text="Logout" onAction="#handleLogout"
+                    style="-fx-background-color:#FFF0F0; -fx-text-fill:#EF4444;
+                           -fx-font-weight:bold; -fx-font-size:12px;
+                           -fx-background-radius:10; -fx-border-color:#FFD6D6;
+                           -fx-border-radius:10; -fx-border-width:1.5;
+                           -fx-padding:7 16; -fx-cursor:hand;"/>
+        </HBox>
+    </top>
+
+    <left>
+        <VBox spacing="10"
+              style="-fx-background-color:#FFFFFF; -fx-padding:20 14 20 14;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 2 0 0;
+                     -fx-pref-width:235px;">
+
+            <VBox alignment="CENTER" spacing="5"
+                  style="-fx-background-color:linear-gradient(to bottom right,#FF6B6B,#FF8E53);
+                         -fx-background-radius:16; -fx-padding:20 16;
+                         -fx-effect:dropshadow(gaussian,rgba(255,107,107,0.4),14,0,0,5);">
+                <Label text="💰  WALLET BALANCE"
+                       style="-fx-text-fill:rgba(255,255,255,0.8);
+                              -fx-font-size:10px; -fx-font-weight:bold;"/>
+                <Label fx:id="balanceLabel" text="Rs. 0.00"
+                       style="-fx-text-fill:#FFFFFF; -fx-font-size:26px; -fx-font-weight:bold;"/>
+                <Label text="LendAHand Wallet"
+                       style="-fx-text-fill:rgba(255,255,255,0.6); -fx-font-size:9px;"/>
+            </VBox>
+
+            <HBox spacing="8">
+                <Button text="+ Deposit" onAction="#handleOpenWallet"
+                        style="-fx-background-color:#22C55E; -fx-text-fill:#FFFFFF;
+                               -fx-font-weight:bold; -fx-font-size:11px;
+                               -fx-background-radius:10; -fx-padding:8 10; -fx-cursor:hand;"
+                        HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="- Withdraw" onAction="#handleOpenWallet"
+                        style="-fx-background-color:#FFFFFF; -fx-text-fill:#F59E0B;
+                               -fx-font-weight:bold; -fx-font-size:11px;
+                               -fx-background-radius:10; -fx-border-color:#FDE68A;
+                               -fx-border-radius:10; -fx-border-width:2;
+                               -fx-padding:8 10; -fx-cursor:hand;"
+                        HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+
+            <Separator/>
+            <Label text="NAVIGATE"
+                   style="-fx-text-fill:#94A3B8; -fx-font-size:9px;
+                          -fx-font-weight:bold; -fx-padding:4 0 2 6;"/>
+
+            <Button fx:id="primaryActionBtn" text="Post a Task"
+                    onAction="#handlePrimaryAction"
+                    styleClass="btn-sidebar" maxWidth="Infinity" prefHeight="44"/>
+
+            <Button text="🏷  My Bids" onAction="#handleOpenBids"
+                    styleClass="btn-sidebar-ghost" maxWidth="Infinity" prefHeight="40"/>
+
+            <Button text="🤖  AI Chat" onAction="#handleSecondaryAction"
+                    styleClass="btn-sidebar-ghost" maxWidth="Infinity" prefHeight="40"/>
+
+            <Button text="💳  My Wallet" onAction="#handleOpenWallet"
+                    styleClass="btn-sidebar-ghost" maxWidth="Infinity" prefHeight="40"/>
+
+            <Button text="🗺  Full Screen Map" onAction="#handleOpenMap"
+                    styleClass="btn-sidebar-ghost" maxWidth="Infinity" prefHeight="40"/>
+
+            <Button fx:id="themeToggleBtn" text="🌙  Dark Mode"
+                    onAction="#handleToggleTheme"
+                    styleClass="btn-sidebar-ghost" maxWidth="Infinity" prefHeight="40"/>
+
+            <Separator/>
+            <Label text="STATS"
+                   style="-fx-text-fill:#94A3B8; -fx-font-size:9px;
+                          -fx-font-weight:bold; -fx-padding:4 0 2 6;"/>
+            <Label fx:id="statsLabel" text="" styleClass="text-muted"
+                   wrapText="true" style="-fx-padding:0 0 0 6; -fx-font-size:11px;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label text="✦ ● ◆ ✦ ●"
+                   style="-fx-text-fill:#E2E8F0; -fx-font-size:12px; -fx-padding:8 0 0 6;"/>
+        </VBox>
+    </left>
+
+    <center>
+        <SplitPane dividerPositions="0.46"
+                   style="-fx-background-color:#F7F6F2; -fx-box-border:transparent;">
+
+            <VBox spacing="0"
+                  style="-fx-background-color:#F7F6F2; -fx-padding:20 10 20 20;">
+                <HBox spacing="4"
+                      style="-fx-background-color:#FFFFFF; -fx-background-radius:14 14 0 0;
+                             -fx-padding:6; -fx-border-color:#E8E8E8;
+                             -fx-border-width:1.5 1.5 0 1.5; -fx-border-radius:14 14 0 0;">
+                    <Button fx:id="openTasksTab" text="🟢  Open Tasks"
+                            onAction="#handleShowOpenTasks"
+                            style="-fx-background-color:linear-gradient(to right,#FF6B6B,#FF8E53);
+                                   -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                                   -fx-font-size:12px; -fx-background-radius:10;
+                                   -fx-padding:9 20; -fx-cursor:hand;"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button fx:id="myTasksTab" text="📋  My Tasks"
+                            onAction="#handleShowMyTasks"
+                            style="-fx-background-color:transparent; -fx-text-fill:#94A3B8;
+                                   -fx-font-size:12px; -fx-background-radius:10;
+                                   -fx-padding:9 20; -fx-cursor:hand;"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10"
+                      style="-fx-background-color:#FFFFFF; -fx-padding:8 16;
+                             -fx-border-color:#E8E8E8; -fx-border-width:0 1.5 0 1.5;">
+                    <Label fx:id="taskCountLabel" text="Loading..."
+                           style="-fx-text-fill:#94A3B8; -fx-font-size:11px;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="↻ Refresh" onAction="#handleRefresh"
+                            style="-fx-background-color:#F7F6F2; -fx-text-fill:#64748B;
+                                   -fx-font-size:11px; -fx-background-radius:8;
+                                   -fx-border-color:#E2E8F0; -fx-border-radius:8;
+                                   -fx-border-width:1.5; -fx-padding:4 12; -fx-cursor:hand;"
+                            prefHeight="28"/>
+                </HBox>
+
+                <ListView fx:id="taskListView" styleClass="task-list"
+                          VBox.vgrow="ALWAYS"
+                          style="-fx-background-radius:0 0 14 14; -fx-border-radius:0 0 14 14;"
+                          onMouseClicked="#handleViewTask"/>
+
+                <HBox alignment="CENTER_RIGHT" style="-fx-padding:12 0 0 0;">
+                    <Button text="Open Selected Task →" onAction="#handleViewTask"
+                            styleClass="btn-primary" prefHeight="42" prefWidth="220"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="mapContainer" spacing="0"
+                  style="-fx-background-color:#F7F6F2; -fx-padding:20 20 20 10;">
+                <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-padding:0 0 10 0;">
+                    <Label text="🗺  Live Task Map"
+                           style="-fx-text-fill:#1E293B; -fx-font-size:15px; -fx-font-weight:bold;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="mapLocationField" promptText="Your city..."
+                               style="-fx-background-color:#FFFFFF; -fx-text-fill:#1E293B;
+                                      -fx-prompt-text-fill:#94A3B8; -fx-border-color:#E2E8F0;
+                                      -fx-border-radius:10; -fx-background-radius:10;
+                                      -fx-border-width:2; -fx-padding:6 10; -fx-font-size:11px;"
+                               prefWidth="130" prefHeight="32" onAction="#handleMapLocate"/>
+                    <Button text="Go →" onAction="#handleMapLocate"
+                            style="-fx-background-color:linear-gradient(to right,#4ECDC4,#26A69A);
+                                   -fx-text-fill:#FFFFFF; -fx-font-weight:bold; -fx-font-size:11px;
+                                   -fx-background-radius:10; -fx-padding:6 14; -fx-cursor:hand;"
+                            prefHeight="32"/>
+                </HBox>
+                <Label fx:id="mapStatusLabel" text="Loading map..."
+                       style="-fx-text-fill:#94A3B8; -fx-font-size:10px; -fx-padding:5 0 0 0;"/>
+            </VBox>
+
+        </SplitPane>
+    </center>
+
+</BorderPane>

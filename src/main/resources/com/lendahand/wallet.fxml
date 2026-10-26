@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.WalletController"
+            prefWidth="980" prefHeight="680"
+            style="-fx-background-color:#F7F6F2;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:0 24 0 24; -fx-pref-height:62px;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 2 0;
+                     -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);">
+            <Button text="← Dashboard" onAction="#handleBack"
+                    style="-fx-background-color:#F7F6F2; -fx-text-fill:#64748B;
+                           -fx-font-size:12px; -fx-background-radius:10;
+                           -fx-border-color:#E2E8F0; -fx-border-radius:10;
+                           -fx-border-width:1.5; -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+            <Label text="💳" style="-fx-font-size:22px;"/>
+            <Label text="My Wallet"
+                   style="-fx-text-fill:#1E293B; -fx-font-size:18px; -fx-font-weight:bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20"
+              style="-fx-padding:40; -fx-background-color:#F7F6F2;">
+
+            <!-- Balance hero card -->
+            <VBox alignment="CENTER" spacing="8"
+                  style="-fx-background-color:linear-gradient(to bottom right,#FF6B6B,#FF8E53);
+                         -fx-background-radius:24; -fx-padding:40 60 40 60;
+                         -fx-effect:dropshadow(gaussian,rgba(255,107,107,0.45),24,0,0,10);
+                         -fx-max-width:500;">
+                <!-- Doodle row -->
+                <HBox alignment="CENTER" spacing="12" style="-fx-padding:0 0 8 0;">
+                    <Label text="✦" style="-fx-text-fill:rgba(255,255,255,0.4); -fx-font-size:16px;"/>
+                    <Label text="●" style="-fx-text-fill:rgba(255,255,255,0.5); -fx-font-size:10px;"/>
+                    <Label text="◆" style="-fx-text-fill:rgba(255,255,255,0.4); -fx-font-size:14px;"/>
+                    <Label text="●" style="-fx-text-fill:rgba(255,255,255,0.5); -fx-font-size:8px;"/>
+                    <Label text="✦" style="-fx-text-fill:rgba(255,255,255,0.4); -fx-font-size:12px;"/>
+                </HBox>
+                <Label text="CURRENT BALANCE"
+                       style="-fx-text-fill:rgba(255,255,255,0.75);
+                              -fx-font-size:11px; -fx-font-weight:bold;
+                              -fx-letter-spacing:1.2px;"/>
+                <Label fx:id="balanceLabel" text="Rs. 0.00"
+                       style="-fx-text-fill:#FFFFFF; -fx-font-size:48px;
+                              -fx-font-weight:bold;"/>
+                <Label text="LendAHand Wallet"
+                       style="-fx-text-fill:rgba(255,255,255,0.6); -fx-font-size:12px;"/>
+            </VBox>
+
+            <!-- Tab toggle -->
+            <HBox alignment="CENTER" spacing="0"
+                  style="-fx-background-color:#FFFFFF; -fx-background-radius:14;
+                         -fx-padding:5; -fx-border-color:#E8E8E8;
+                         -fx-border-radius:14; -fx-border-width:2;
+                         -fx-max-width:500;
+                         -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.05),8,0,0,2);">
+                <Button text="💚  Deposit" onAction="#handleDepositTab"
+                        style="-fx-background-color:linear-gradient(to right,#22C55E,#16A34A);
+                               -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                               -fx-font-size:13px; -fx-background-radius:10;
+                               -fx-padding:10 0 10 0; -fx-cursor:hand;"
+                        HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="44"/>
+                <Button text="🟡  Withdraw" onAction="#handleWithdrawTab"
+                        style="-fx-background-color:transparent;
+                               -fx-text-fill:#94A3B8; -fx-font-size:13px;
+                               -fx-background-radius:10; -fx-padding:10 0 10 0;
+                               -fx-cursor:hand;"
+                        HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="44"/>
+            </HBox>
+
+            <!-- Hidden labels for tab state (used by controller) -->
+            <Label fx:id="depositTabBtn"  visible="false" managed="false"/>
+            <Label fx:id="withdrawTabBtn" visible="false" managed="false"/>
+
+            <!-- Amount input card -->
+            <VBox spacing="16" alignment="CENTER"
+                  style="-fx-background-color:#FFFFFF; -fx-background-radius:20;
+                         -fx-padding:30 40 30 40;
+                         -fx-border-color:#E8E8E8; -fx-border-radius:20;
+                         -fx-border-width:2; -fx-max-width:500;
+                         -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),14,0,0,4);">
+
+                <VBox spacing="6">
+                    <Label text="AMOUNT (PKR)" styleClass="field-label"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Rs."
+                               style="-fx-text-fill:#FF6B6B; -fx-font-size:20px;
+                                      -fx-font-weight:bold;"/>
+                        <TextField fx:id="amountField"
+                                   promptText="Enter amount"
+                                   styleClass="input-field"
+                                   HBox.hgrow="ALWAYS"
+                                   onAction="#handleDeposit"
+                                   style="-fx-font-size:20px; -fx-pref-height:56px;"/>
+                    </HBox>
+                </VBox>
+
+                <Label fx:id="feedbackLabel" wrapText="true"
+                       visible="false" maxWidth="400"
+                       style="-fx-font-size:12px;"/>
+
+                <!-- Deposit button -->
+                <Button fx:id="depositBtn" text="💚  Deposit Funds"
+                        onAction="#handleDeposit"
+                        style="-fx-background-color:linear-gradient(to right,#22C55E,#16A34A);
+                               -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                               -fx-font-size:15px; -fx-background-radius:14;
+                               -fx-padding:15 0 15 0; -fx-cursor:hand;
+                               -fx-effect:dropshadow(gaussian,rgba(34,197,94,0.4),12,0,0,4);"
+                        maxWidth="Infinity" prefHeight="54"/>
+
+                <!-- Withdraw button -->
+                <Button fx:id="withdrawBtn" text="🟡  Withdraw Funds"
+                        onAction="#handleWithdraw"
+                        style="-fx-background-color:linear-gradient(to right,#FFD166,#FF9F43);
+                               -fx-text-fill:#1E293B; -fx-font-weight:bold;
+                               -fx-font-size:15px; -fx-background-radius:14;
+                               -fx-padding:15 0 15 0; -fx-cursor:hand;
+                               -fx-effect:dropshadow(gaussian,rgba(255,209,102,0.4),12,0,0,4);"
+                        maxWidth="Infinity" prefHeight="54"
+                        visible="false" managed="false"/>
+
+                <HBox alignment="CENTER" spacing="6">
+                    <Label text="🔒" style="-fx-font-size:12px;"/>
+                    <Label text="Funds are added or removed from your wallet instantly."
+                           style="-fx-text-fill:#94A3B8; -fx-font-size:11px;
+                                  -fx-font-style:italic;"/>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </center>
+</BorderPane>

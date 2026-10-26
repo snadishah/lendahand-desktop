@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.PostTaskController"
+            prefWidth="980" prefHeight="700"
+            style="-fx-background-color:#F7F6F2;">
+
+    <!-- Navbar -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:0 24 0 24; -fx-pref-height:62px;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 2 0;
+                     -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);">
+            <Button text="← Dashboard" onAction="#handleBackToDashboard"
+                    style="-fx-background-color:#F7F6F2;
+                           -fx-text-fill:#64748B; -fx-font-size:12px;
+                           -fx-background-radius:10; -fx-border-color:#E2E8F0;
+                           -fx-border-radius:10; -fx-border-width:1.5;
+                           -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+            <Label text="🤝" style="-fx-font-size:22px;"/>
+            <Label text="Post a New Task"
+                   style="-fx-text-fill:#1E293B; -fx-font-size:18px;
+                          -fx-font-weight:bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color:transparent;
+                           -fx-background:transparent;">
+            <HBox spacing="20" style="-fx-padding:24;">
+
+                <!-- Left: task form -->
+                <VBox spacing="16" prefWidth="490"
+                      style="-fx-background-color:#FFFFFF;
+                             -fx-background-radius:18;
+                             -fx-padding:28 26 28 26;
+                             -fx-border-color:#E8E8E8;
+                             -fx-border-radius:18;
+                             -fx-border-width:2;
+                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),14,0,0,4);">
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="📋"  style="-fx-font-size:24px;"/>
+                        <Label text="Task Details"
+                               style="-fx-text-fill:#1E293B; -fx-font-size:16px;
+                                      -fx-font-weight:bold;"/>
+                    </HBox>
+
+                    <VBox spacing="5">
+                        <Label text="TASK TITLE *" styleClass="field-label"/>
+                        <TextField fx:id="titleField"
+                                   promptText="e.g. Help me wash my car"
+                                   styleClass="input-field"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text="DESCRIPTION *" styleClass="field-label"/>
+                        <TextArea fx:id="descriptionArea"
+                                  promptText="Describe what you need done, how long it might take..."
+                                  styleClass="input-field" prefHeight="100" wrapText="true"/>
+                    </VBox>
+
+                    <HBox spacing="14">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="CATEGORY" styleClass="field-label"/>
+                            <ComboBox fx:id="categoryCombo" maxWidth="Infinity"
+                                      styleClass="input-field"/>
+                        </VBox>
+                        <VBox spacing="5" prefWidth="150">
+                            <Label text="BUDGET (Rs.) *" styleClass="field-label"/>
+                            <TextField fx:id="budgetField" promptText="e.g. 2000"
+                                       styleClass="input-field"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="5">
+                        <Label text="LOCATION / ADDRESS *" styleClass="field-label"/>
+                        <TextField fx:id="addressField"
+                                   promptText="e.g. F-10 Markaz, Islamabad"
+                                   styleClass="input-field"/>
+                        <Label text="Used to show your task to nearby helpers."
+                               style="-fx-text-fill:#94A3B8; -fx-font-size:10px;
+                                      -fx-font-style:italic;"/>
+                    </VBox>
+
+                    <Label fx:id="statusLabel"
+                           style="-fx-font-size:13px;" visible="false" wrapText="true"/>
+
+                    <Button text="📋  Post Task" fx:id="postBtn"
+                            onAction="#handlePostTask"
+                            styleClass="btn-primary"
+                            prefHeight="48" maxWidth="Infinity"
+                            style="-fx-font-size:14px;"/>
+                </VBox>
+
+                <!-- Right: AI estimate -->
+                <VBox spacing="16" prefWidth="390"
+                      style="-fx-background-color:#FFFFFF;
+                             -fx-background-radius:18;
+                             -fx-padding:28 26 28 26;
+                             -fx-border-color:#E8E8E8;
+                             -fx-border-radius:18;
+                             -fx-border-width:2;
+                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),14,0,0,4);">
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="✨" style="-fx-font-size:24px;"/>
+                        <Label text="AI Price Estimator"
+                               style="-fx-text-fill:#1E293B; -fx-font-size:16px;
+                                      -fx-font-weight:bold;"/>
+                    </HBox>
+
+                    <Label text="Fill in your task description then click below. Our AI will suggest a fair price range."
+                           style="-fx-text-fill:#64748B; -fx-font-size:12px;"
+                           wrapText="true"/>
+
+                    <Button text="✨  Get AI Estimate" fx:id="estimateBtn"
+                            onAction="#handleGetEstimate"
+                            style="-fx-background-color:linear-gradient(to right,#A78BFA,#8B5CF6);
+                                   -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                                   -fx-font-size:13px; -fx-background-radius:12;
+                                   -fx-padding:12 0 12 0; -fx-cursor:hand;
+                                   -fx-effect:dropshadow(gaussian,rgba(167,139,250,0.4),10,0,0,3);"
+                            prefHeight="46" maxWidth="Infinity"/>
+
+                    <Label text="AI Suggestion:" styleClass="field-label"/>
+
+                    <TextArea fx:id="aiEstimateArea" wrapText="true"
+                            editable="false" prefHeight="340"
+                             VBox.vgrow="ALWAYS"
+                              style="-fx-background-color:#F5F0FF;
+                                     -fx-text-fill:#4C1D95;
+                                     -fx-border-color:#E0D4FF;
+                                     -fx-border-radius:12;
+                                     -fx-background-radius:12;
+                                     -fx-border-width:2;
+                                     -fx-padding:12; -fx-font-size:12px;"/>
+
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label text="⚠️" style="-fx-font-size:12px;"/>
+                        <Label text="AI suggestions are estimates only."
+                               style="-fx-text-fill:#94A3B8; -fx-font-size:10px;
+                                      -fx-font-style:italic;" wrapText="true"/>
+                    </HBox>
+                </VBox>
+
+            </HBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

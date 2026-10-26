@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.ChatController"
+            prefWidth="980" prefHeight="700"
+            style="-fx-background-color:#F7F6F2;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:0 24 0 24; -fx-pref-height:62px;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 2 0;
+                     -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);">
+            <Button text="← Dashboard" onAction="#handleBack"
+                    style="-fx-background-color:#F7F6F2; -fx-text-fill:#64748B;
+                           -fx-font-size:12px; -fx-background-radius:10;
+                           -fx-border-color:#E2E8F0; -fx-border-radius:10;
+                           -fx-border-width:1.5; -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+            <Label text="🤖" style="-fx-font-size:24px;"/>
+            <Label text="AI Chat Assistant"
+                   style="-fx-text-fill:#1E293B; -fx-font-size:18px; -fx-font-weight:bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🗑  Clear Chat" onAction="#handleClearChat"
+                    style="-fx-background-color:#FFF0F0; -fx-text-fill:#EF4444;
+                           -fx-font-size:12px; -fx-background-radius:10;
+                           -fx-border-color:#FFD6D6; -fx-border-radius:10;
+                           -fx-border-width:1.5; -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox style="-fx-background-color:#F7F6F2;">
+
+            <!-- Chat scroll area -->
+            <ScrollPane fx:id="chatScrollPane" fitToWidth="true"
+                        VBox.vgrow="ALWAYS" prefHeight="530"
+                        hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                        style="-fx-background-color:#F7F6F2;
+                               -fx-background:transparent;
+                               -fx-border-color:transparent;">
+                <VBox fx:id="chatBox" spacing="10"
+                      style="-fx-padding:20 20 20 20;
+                             -fx-background-color:#F7F6F2;"/>
+            </ScrollPane>
+
+            <!-- Input bar -->
+            <HBox spacing="10" alignment="CENTER"
+                  style="-fx-background-color:#FFFFFF;
+                         -fx-padding:14 20 14 20;
+                         -fx-border-color:#E8E8E8;
+                         -fx-border-width:2 0 0 0;
+                         -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,-2);">
+                <TextField fx:id="inputField"
+                           promptText="Ask me anything about LendAHand..."
+                           styleClass="input-field"
+                           HBox.hgrow="ALWAYS"
+                           onAction="#handleSend"/>
+                <Button fx:id="sendBtn" text="Send →"
+                        onAction="#handleSend"
+                        style="-fx-background-color:linear-gradient(to right,#A78BFA,#8B5CF6);
+                               -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                               -fx-font-size:13px; -fx-background-radius:12;
+                               -fx-padding:10 22 10 22; -fx-cursor:hand;
+                               -fx-effect:dropshadow(gaussian,rgba(167,139,250,0.4),10,0,0,3);"
+                        prefHeight="44"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- Right sidebar: quick prompts -->
+    <right>
+        <VBox spacing="10" prefWidth="210"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:20 16 20 16;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 0 2;">
+
+            <Label text="QUICK PROMPTS"
+                   style="-fx-text-fill:#94A3B8; -fx-font-size:9px;
+                          -fx-font-weight:bold; -fx-padding:0 0 4 4;"/>
+
+            <Button text="How do I post a task?"
+                    onAction="#handleSend"
+                    userData="How do I post a task on LendAHand?"
+                    styleClass="btn-quick-prompt" maxWidth="Infinity" wrapText="true"/>
+            <Button text="How does bidding work?"
+                    onAction="#handleSend"
+                    userData="Can you explain how the bidding system works?"
+                    styleClass="btn-quick-prompt" maxWidth="Infinity" wrapText="true"/>
+            <Button text="What is the wallet?"
+                    onAction="#handleSend"
+                    userData="What is the LendAHand wallet and how does it work?"
+                    styleClass="btn-quick-prompt" maxWidth="Infinity" wrapText="true"/>
+            <Button text="How does escrow work?"
+                    onAction="#handleSend"
+                    userData="How does the escrow and pending payment system work?"
+                    styleClass="btn-quick-prompt" maxWidth="Infinity" wrapText="true"/>
+            <Button text="Tips for pricing my task"
+                    onAction="#handleSend"
+                    userData="Give me tips on how to price my task fairly."
+                    styleClass="btn-quick-prompt" maxWidth="Infinity" wrapText="true"/>
+            <Button text="How to find tasks near me?"
+                    onAction="#handleSend"
+                    userData="How can I find tasks that are close to my location?"
+                    styleClass="btn-quick-prompt" maxWidth="Infinity" wrapText="true"/>
+
+            <Separator style="-fx-padding:6 0;"/>
+
+            <VBox spacing="3" style="-fx-padding:4 0 0 4;">
+                <Label text="Powered by"
+                       style="-fx-text-fill:#CBD5E1; -fx-font-size:9px;"/>
+                <Label text="Gemini API"
+                       style="-fx-text-fill:#A78BFA; -fx-font-size:10px;
+                              -fx-font-weight:bold;"/>
+            </VBox>
+
+            <!-- Doodle -->
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label text="✦ ● ◆"
+                   style="-fx-text-fill:#F1F5F9; -fx-font-size:14px;
+                          -fx-padding:0 0 4 4;"/>
+        </VBox>
+    </right>
+
+</BorderPane>

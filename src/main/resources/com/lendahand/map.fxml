@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="rootPane"
+            fx:controller="com.lendahand.controllers.MapController"
+            styleClass="root-pane" prefWidth="1100" prefHeight="700">
+
+    <!-- Navbar -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="navbar">
+            <Button text="&lt;- Dashboard" onAction="#handleBack" styleClass="btn-ghost"/>
+            <Label text="Task Map" styleClass="navbar-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Location search -->
+            <TextField fx:id="locationField"
+                       promptText="Enter your city e.g. Islamabad"
+                       styleClass="input-field"
+                       prefWidth="260" prefHeight="36"/>
+            <Button fx:id="locateBtn" text="Find Me"
+                    onAction="#handleLocateMe"
+                    styleClass="btn-primary" prefHeight="36"/>
+            <Button text="Refresh" onAction="#handleRefreshTasks"
+                    styleClass="btn-ghost" prefHeight="36"/>
+
+            <Label fx:id="statusLabel" text="" styleClass="text-muted" visible="false"/>
+        </HBox>
+    </top>
+
+    <!--
+        Centre is empty here — MapController injects
+        the Gluon MapView programmatically in initialize()
+    -->
+
+</BorderPane>

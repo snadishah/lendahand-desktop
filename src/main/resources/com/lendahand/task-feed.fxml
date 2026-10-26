@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.TaskFeedController"
+            prefWidth="980" prefHeight="700"
+            style="-fx-background-color:#F7F6F2;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:0 24 0 24; -fx-pref-height:62px;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 2 0;
+                     -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);">
+            <Button text="← Dashboard" onAction="#handleBack"
+                    style="-fx-background-color:#F7F6F2;
+                           -fx-text-fill:#64748B; -fx-font-size:12px;
+                           -fx-background-radius:10; -fx-border-color:#E2E8F0;
+                           -fx-border-radius:10; -fx-border-width:1.5;
+                           -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+            <Label text="🔍" style="-fx-font-size:22px;"/>
+            <Label text="Browse Open Tasks"
+                   style="-fx-text-fill:#1E293B; -fx-font-size:18px; -fx-font-weight:bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="↻ Refresh" onAction="#handleRefresh"
+                    style="-fx-background-color:#F7F6F2;
+                           -fx-text-fill:#64748B; -fx-font-size:12px;
+                           -fx-background-radius:10; -fx-border-color:#E2E8F0;
+                           -fx-border-radius:10; -fx-border-width:1.5;
+                           -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="16" style="-fx-padding:24;">
+
+            <!-- Filter + Sort bar -->
+            <HBox spacing="14" alignment="CENTER_LEFT"
+                  style="-fx-background-color:#FFFFFF;
+                         -fx-background-radius:16;
+                         -fx-padding:16 20 16 20;
+                         -fx-border-color:#E8E8E8;
+                         -fx-border-radius:16;
+                         -fx-border-width:2;
+                         -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.05),10,0,0,3);">
+
+                <Label text="📍" style="-fx-font-size:18px;"/>
+                <VBox spacing="4" prefWidth="240">
+                    <Label text="SORT BY DISTANCE" styleClass="field-label"/>
+                    <TextField fx:id="locationField"
+                               promptText="Enter your city e.g. Islamabad"
+                               styleClass="input-field" prefHeight="36"/>
+                </VBox>
+
+                <Button text="📍  Sort by Distance" fx:id="sortBtn"
+                        onAction="#handleSortByDistance"
+                        style="-fx-background-color:linear-gradient(to right,#4ECDC4,#26A69A);
+                               -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                               -fx-font-size:12px; -fx-background-radius:12;
+                               -fx-padding:10 18 10 18; -fx-cursor:hand;
+                               -fx-effect:dropshadow(gaussian,rgba(78,205,196,0.35),8,0,0,3);"
+                        prefHeight="40"/>
+
+                <Separator orientation="VERTICAL"
+                           style="-fx-padding:0 6; -fx-background-color:#E8E8E8;"/>
+
+                <VBox spacing="4" prefWidth="210">
+                    <Label text="FILTER BY CATEGORY" styleClass="field-label"/>
+                    <ComboBox fx:id="categoryFilter" maxWidth="Infinity"
+                              onAction="#handleFilterChanged"
+                              styleClass="input-field" prefHeight="36"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="statusLabel" text=""
+                       style="-fx-text-fill:#94A3B8; -fx-font-size:11px;"/>
+            </HBox>
+
+            <!-- Task list -->
+            <ListView fx:id="taskListView" styleClass="task-list"
+                      VBox.vgrow="ALWAYS" prefHeight="440"/>
+
+            <!-- Bottom actions -->
+            <HBox spacing="14" alignment="CENTER_RIGHT">
+                <Label text="Select a task then click View Details to place a bid."
+                       style="-fx-text-fill:#94A3B8; -fx-font-size:11px;
+                              -fx-font-style:italic;"
+                       HBox.hgrow="ALWAYS"/>
+                <Button text="View Details →" onAction="#handleViewDetails"
+                        styleClass="btn-primary" prefHeight="42" prefWidth="180"/>
+            </HBox>
+
+        </VBox>
+    </center>
+</BorderPane>

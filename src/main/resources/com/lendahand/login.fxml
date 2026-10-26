@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.LoginController"
+            prefWidth="980" prefHeight="680"
+            style="-fx-background-color:#F7F6F2;">
+
+    <center>
+        <HBox style="-fx-background-color:#F7F6F2;">
+
+            <VBox alignment="CENTER" spacing="0" prefWidth="440"
+                  style="-fx-background-color:#1E293B; -fx-padding:50;">
+
+                <HBox spacing="8" style="-fx-padding:0 0 32 0;">
+                    <Label text="✦" style="-fx-text-fill:#FF6B6B; -fx-font-size:18px;"/>
+                    <Label text="◆" style="-fx-text-fill:#FFD166; -fx-font-size:12px;"/>
+                    <Label text="●" style="-fx-text-fill:#4ECDC4; -fx-font-size:10px;"/>
+                    <Label text="✦" style="-fx-text-fill:#A78BFA; -fx-font-size:14px;"/>
+                </HBox>
+
+                <Label text="🤝" style="-fx-font-size:58px; -fx-padding:0 0 10 0;"/>
+                <Label text="LendAHand"
+                       style="-fx-text-fill:#FFFFFF; -fx-font-size:38px;
+                              -fx-font-weight:bold; -fx-padding:0 0 6 0;"/>
+                <Label text="Pakistan's task marketplace"
+                       style="-fx-text-fill:rgba(255,255,255,0.55);
+                              -fx-font-size:14px; -fx-padding:0 0 36 0;"/>
+
+                <VBox spacing="10" maxWidth="320">
+                    <HBox spacing="12" alignment="CENTER_LEFT"
+                          style="-fx-background-color:rgba(255,255,255,0.07);
+                                 -fx-background-radius:12; -fx-padding:12 16 12 16;">
+                        <Label text="💰" style="-fx-font-size:20px;"/>
+                        <VBox spacing="1">
+                            <Label text="Earn Real Rupees"
+                                   style="-fx-text-fill:#FFFFFF;-fx-font-weight:bold;-fx-font-size:13px;"/>
+                            <Label text="Complete tasks and get paid"
+                                   style="-fx-text-fill:rgba(255,255,255,0.5);-fx-font-size:11px;"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="12" alignment="CENTER_LEFT"
+                          style="-fx-background-color:rgba(255,255,255,0.07);
+                                 -fx-background-radius:12; -fx-padding:12 16 12 16;">
+                        <Label text="🤖" style="-fx-font-size:20px;"/>
+                        <VBox spacing="1">
+                            <Label text="AI Price Estimator"
+                                   style="-fx-text-fill:#FFFFFF;-fx-font-weight:bold;-fx-font-size:13px;"/>
+                            <Label text="Get smart pricing suggestions"
+                                   style="-fx-text-fill:rgba(255,255,255,0.5);-fx-font-size:11px;"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="12" alignment="CENTER_LEFT"
+                          style="-fx-background-color:rgba(255,255,255,0.07);
+                                 -fx-background-radius:12; -fx-padding:12 16 12 16;">
+                        <Label text="🗺" style="-fx-font-size:20px;"/>
+                        <VBox spacing="1">
+                            <Label text="Live Task Map"
+                                   style="-fx-text-fill:#FFFFFF;-fx-font-weight:bold;-fx-font-size:13px;"/>
+                            <Label text="Find tasks near you instantly"
+                                   style="-fx-text-fill:rgba(255,255,255,0.5);-fx-font-size:11px;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="12" alignment="CENTER"
+                      style="-fx-padding:36 0 0 0;">
+                    <Label text="★" style="-fx-text-fill:#FFD166; -fx-font-size:20px;"/>
+                    <Label text="★" style="-fx-text-fill:#FF6B6B; -fx-font-size:14px;"/>
+                    <Label text="★" style="-fx-text-fill:#4ECDC4; -fx-font-size:18px;"/>
+                    <Label text="★" style="-fx-text-fill:#A78BFA; -fx-font-size:12px;"/>
+                    <Label text="★" style="-fx-text-fill:#FFD166; -fx-font-size:16px;"/>
+                </HBox>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="0" HBox.hgrow="ALWAYS"
+                  style="-fx-background-color:#FFFFFF; -fx-padding:60 70 60 70;">
+
+                <Label text="Welcome back! 👋"
+                       style="-fx-text-fill:#1E293B; -fx-font-size:30px;
+                              -fx-font-weight:bold; -fx-padding:0 0 6 0;"/>
+                <Label text="Sign in to continue"
+                       style="-fx-text-fill:#94A3B8; -fx-font-size:14px;
+                              -fx-padding:0 0 32 0;"/>
+
+                <VBox spacing="6" maxWidth="380" fillWidth="true"
+                      style="-fx-padding:0 0 16 0;">
+                    <Label text="EMAIL ADDRESS" styleClass="field-label" style="-fx-text-fill:#64748B; -fx-font-size:12px; -fx-font-weight:bold;"/>
+                    <TextField fx:id="emailField"
+                               promptText="you@example.com"
+                               styleClass="input-field"
+                               style="-fx-background-color:#F8FAFC; -fx-border-color:#E2E8F0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:12;"
+                               maxWidth="380"/>
+                </VBox>
+
+                <VBox spacing="6" maxWidth="380" fillWidth="true"
+                      style="-fx-padding:0 0 20 0;">
+                    <Label text="PASSWORD" styleClass="field-label" style="-fx-text-fill:#64748B; -fx-font-size:12px; -fx-font-weight:bold;"/>
+                    <PasswordField fx:id="passwordField"
+                                  promptText="Your password"
+                                  styleClass="input-field"
+                                  style="-fx-background-color:#F8FAFC; -fx-border-color:#E2E8F0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:12;"
+                                  maxWidth="380"
+                                  onAction="#handleLogin"/>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="12" maxWidth="380">
+                    
+                    <Label fx:id="errorLabel" visible="false" wrapText="true" 
+                           style="-fx-text-fill:#EF4444; -fx-font-size:13px;"/>
+
+                    <Button text="Sign In →" onAction="#handleLogin"
+                            maxWidth="380" prefHeight="50"
+                            style="-fx-background-color:#FF6B6B; -fx-text-fill:white; -fx-font-size:15px; -fx-font-weight:bold; -fx-background-radius:8; -fx-cursor:hand;"/>
+
+                    <HBox alignment="CENTER" spacing="10" style="-fx-padding:10 0;">
+                        <Separator HBox.hgrow="ALWAYS"/>
+                        <Label text="or" style="-fx-text-fill:#CBD5E1; -fx-font-size:12px;"/>
+                        <Separator HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <Label text="Don't have an account yet?"
+                           style="-fx-text-fill:#64748B; -fx-font-size:13px;"/>
+                    
+                    <Button text="Create a free account →" onAction="#handleGoToRegister"
+                            maxWidth="380" prefHeight="50"
+                            style="-fx-background-color:#FFF5F5; -fx-text-fill:#FF6B6B; -fx-font-weight:bold; -fx-font-size:14px; -fx-background-radius:8; -fx-border-color:#FFD6D6; -fx-border-radius:8; -fx-border-width:2; -fx-cursor:hand;"/>
+                </VBox>
+
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

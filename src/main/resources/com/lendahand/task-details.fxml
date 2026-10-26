@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.lendahand.controllers.TaskDetailsController"
+            prefWidth="980" prefHeight="700"
+            style="-fx-background-color:#F7F6F2;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color:#FFFFFF;
+                     -fx-padding:0 24 0 24; -fx-pref-height:62px;
+                     -fx-border-color:#E8E8E8; -fx-border-width:0 0 2 0;
+                     -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),10,0,0,3);">
+            <Button text="← Back" onAction="#handleBack"
+                    style="-fx-background-color:#F7F6F2;
+                           -fx-text-fill:#64748B; -fx-font-size:12px;
+                           -fx-background-radius:10; -fx-border-color:#E2E8F0;
+                           -fx-border-radius:10; -fx-border-width:1.5;
+                           -fx-padding:7 14 7 14; -fx-cursor:hand;"/>
+            <Label text="📋" style="-fx-font-size:22px;"/>
+            <Label text="Task Details"
+                   style="-fx-text-fill:#1E293B; -fx-font-size:18px; -fx-font-weight:bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color:transparent; -fx-background:transparent;">
+            <HBox spacing="20" style="-fx-padding:24;">
+
+                <!-- Left: task info -->
+                <VBox spacing="16" prefWidth="470">
+
+                    <!-- Main task card -->
+                    <VBox spacing="14"
+                          style="-fx-background-color:#FFFFFF;
+                                 -fx-background-radius:18; -fx-padding:24 22 24 22;
+                                 -fx-border-color:#E8E8E8; -fx-border-radius:18;
+                                 -fx-border-width:2;
+                                 -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),14,0,0,4);">
+
+                        <Label fx:id="titleLabel" text="Task Title"
+                               style="-fx-text-fill:#1E293B; -fx-font-size:22px;
+                                      -fx-font-weight:bold;" wrapText="true"/>
+
+                        <HBox spacing="24">
+                            <VBox spacing="3">
+                                <Label text="CATEGORY"
+                                       style="-fx-text-fill:#94A3B8; -fx-font-size:9px;
+                                              -fx-font-weight:bold;"/>
+                                <Label fx:id="categoryLabel" text="—"
+                                       style="-fx-text-fill:#1E293B; -fx-font-size:13px;
+                                              -fx-font-weight:bold;"/>
+                            </VBox>
+                            <VBox spacing="3">
+                                <Label text="BUDGET"
+                                       style="-fx-text-fill:#94A3B8; -fx-font-size:9px;
+                                              -fx-font-weight:bold;"/>
+                                <Label fx:id="budgetLabel" text="—"
+                                       style="-fx-text-fill:#FF6B6B; -fx-font-size:15px;
+                                              -fx-font-weight:bold;"/>
+                            </VBox>
+                            <VBox spacing="3">
+                                <Label text="STATUS"
+                                       style="-fx-text-fill:#94A3B8; -fx-font-size:9px;
+                                              -fx-font-weight:bold;"/>
+                                <Label fx:id="statusLabel" text="—"
+                                       style="-fx-text-fill:#22C55E; -fx-font-size:13px;
+                                              -fx-font-weight:bold;"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="6" alignment="CENTER_LEFT">
+                            <Label text="📍"  style="-fx-font-size:13px;"/>
+                            <Label fx:id="addressLabel" text="—"
+                                   style="-fx-text-fill:#475569; -fx-font-size:13px;"
+                                   wrapText="true"/>
+                        </HBox>
+
+                        <Label fx:id="posterLabel" text=""
+                               style="-fx-text-fill:#94A3B8; -fx-font-size:11px;"/>
+                    </VBox>
+
+                    <!-- Description card -->
+                    <VBox spacing="10"
+                          style="-fx-background-color:#FFFFFF;
+                                 -fx-background-radius:18; -fx-padding:22 22 22 22;
+                                 -fx-border-color:#E8E8E8; -fx-border-radius:18;
+                                 -fx-border-width:2;
+                                 -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),14,0,0,4);">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="📝" style="-fx-font-size:18px;"/>
+                            <Label text="Description"
+                                   style="-fx-text-fill:#1E293B; -fx-font-size:15px;
+                                          -fx-font-weight:bold;"/>
+                        </HBox>
+                        <TextArea fx:id="descriptionArea" wrapText="true"
+                                  editable="false" prefHeight="140"
+                                  style="-fx-background-color:#F8F9FA;
+                                         -fx-text-fill:#334155;
+                                         -fx-border-color:#E2E8F0;
+                                         -fx-border-radius:12;
+                                         -fx-background-radius:12;
+                                         -fx-border-width:2;
+                                         -fx-padding:12; -fx-font-size:13px;"/>
+                    </VBox>
+
+                    <!-- Feedback -->
+                    <Label fx:id="feedbackLabel" wrapText="true"
+                           visible="false" maxWidth="460"
+                           style="-fx-font-size:13px;"/>
+                </VBox>
+
+                <!-- Right: bids + actions -->
+                <VBox spacing="16" prefWidth="430">
+
+                    <!-- Helper: place bid -->
+                    <VBox fx:id="helperBidSection" spacing="14"
+                          visible="false" managed="false"
+                          style="-fx-background-color:#FFFFFF;
+                                 -fx-background-radius:18; -fx-padding:24 22 24 22;
+                                 -fx-border-color:#C7F5F1; -fx-border-radius:18;
+                                 -fx-border-width:2;
+                                 -fx-effect:dropshadow(gaussian,rgba(78,205,196,0.15),14,0,0,4);">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="💰" style="-fx-font-size:22px;"/>
+                            <Label text="Place Your Bid"
+                                   style="-fx-text-fill:#1E293B; -fx-font-size:16px;
+                                          -fx-font-weight:bold;"/>
+                        </HBox>
+                        <Label text="Propose how much you want to be paid for completing this task."
+                               style="-fx-text-fill:#64748B; -fx-font-size:12px;"
+                               wrapText="true"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Rs."
+                                   style="-fx-text-fill:#FF6B6B; -fx-font-size:16px;
+                                          -fx-font-weight:bold;"/>
+                            <TextField fx:id="bidAmountField"
+                                       promptText="Enter amount e.g. 2500"
+                                       styleClass="input-field"
+                                       HBox.hgrow="ALWAYS"
+                                       onAction="#handleSubmitBid"/>
+                        </HBox>
+                        <Label fx:id="bidStatusLabel"
+                               style="-fx-text-fill:#64748B; -fx-font-size:11px;"
+                               visible="false" wrapText="true"/>
+                        <Button fx:id="submitBidBtn" text="Submit Bid →"
+                                onAction="#handleSubmitBid"
+                                style="-fx-background-color:linear-gradient(to right,#4ECDC4,#26A69A);
+                                       -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                                       -fx-font-size:14px; -fx-background-radius:12;
+                                       -fx-padding:12 0 12 0; -fx-cursor:hand;
+                                       -fx-effect:dropshadow(gaussian,rgba(78,205,196,0.4),10,0,0,3);"
+                                maxWidth="Infinity" prefHeight="48"/>
+                    </VBox>
+
+                    <!-- Poster: manage bids -->
+                    <VBox fx:id="posterBidSection" spacing="14"
+                          visible="false" managed="false"
+                          style="-fx-background-color:#FFFFFF;
+                                 -fx-background-radius:18; -fx-padding:24 22 24 22;
+                                 -fx-border-color:#FFD6D6; -fx-border-radius:18;
+                                 -fx-border-width:2;
+                                 -fx-effect:dropshadow(gaussian,rgba(255,107,107,0.12),14,0,0,4);">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="📨" style="-fx-font-size:22px;"/>
+                            <Label text="Received Bids"
+                                   style="-fx-text-fill:#1E293B; -fx-font-size:16px;
+                                          -fx-font-weight:bold;"/>
+                        </HBox>
+                        <Label text="Select a bid and click Accept. The amount is held safely in escrow until you mark the task Done."
+                               style="-fx-text-fill:#64748B; -fx-font-size:12px;"
+                               wrapText="true"/>
+
+                        <ListView fx:id="bidsListView" prefHeight="180"
+                                  styleClass="task-list"/>
+
+                        <Button fx:id="acceptBidBtn" text="✅  Accept Selected Bid"
+                                onAction="#handleAcceptBid"
+                                styleClass="btn-primary"
+                                prefHeight="44" maxWidth="Infinity"
+                                visible="true" managed="true"/>
+
+                        <Separator style="-fx-padding:4 0;"/>
+
+                        <HBox spacing="10">
+                            <Button fx:id="markDoneBtn" text="🏁  Mark as Done"
+                                    onAction="#handleMarkDone"
+                                    style="-fx-background-color:linear-gradient(to right,#22C55E,#16A34A);
+                                           -fx-text-fill:#FFFFFF; -fx-font-weight:bold;
+                                           -fx-font-size:13px; -fx-background-radius:12;
+                                           -fx-padding:10 0 10 0; -fx-cursor:hand;"
+                                    HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                                    prefHeight="42"
+                                    visible="false" managed="false"/>
+                            <Button fx:id="cancelTaskBtn" text="❌  Cancel"
+                                    onAction="#handleCancelTask"
+                                    styleClass="btn-danger"
+                                    HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                                    prefHeight="42"
+                                    visible="false" managed="false"/>
+                        </HBox>
+
+                        <!-- Escrow info box -->
+                        <HBox spacing="8" alignment="CENTER_LEFT"
+                              style="-fx-background-color:#FFFBF0;
+                                     -fx-background-radius:10; -fx-padding:10 14;
+                                     -fx-border-color:#FDE68A; -fx-border-radius:10;
+                                     -fx-border-width:1.5;">
+                            <Label text="🔒" style="-fx-font-size:14px;"/>
+                            <Label text="Accept → Rs. locked → Task Done → Helper paid"
+                                   style="-fx-text-fill:#92400E; -fx-font-size:10px;
+                                          -fx-font-weight:bold;" wrapText="true"/>
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </HBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

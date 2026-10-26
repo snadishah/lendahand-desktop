@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',Arial,sans-serif;}
+
+/* ── Theme variables ─────────────────────────────────────────── */
+:root {
+  --bg:       #F7F6F2;
+  --bg2:      #FFFFFF;
+  --bg3:      #F1F5F9;
+  --border:   #E8E8E8;
+  --text:     #1E293B;
+  --text2:    #64748B;
+  --text3:    #94A3B8;
+  --shadow:   rgba(0,0,0,0.08);
+  --pin-open: #22C55E;
+  --pin-ip:   #F59E0B;
+  --pin-done: #94A3B8;
+  --accent:   #FF6B6B;
+  --teal:     #4ECDC4;
+  --map-land: #E8EFF5;
+  --map-sea:  #C8DCF0;
+  --map-border:#CBD5E1;
+  --map-city: #64748B;
+  --map-river:#93C5FD;
+  --map-grid: #E2E8F0;
+}
+
+body.dark {
+  --bg:       #0f0f13;
+  --bg2:      #18181f;
+  --bg3:      #1e1e28;
+  --border:   #2a2a35;
+  --text:     #f0f0f5;
+  --text2:    #6a6a80;
+  --text3:    #3a3a4e;
+  --shadow:   rgba(0,0,0,0.4);
+  --map-land: #1a1a24;
+  --map-sea:  #0d0d1a;
+  --map-border:#2a2a42;
+  --map-city: #3a3a5e;
+  --map-river:#1e2a42;
+  --map-grid: #16161e;
+}
+
+body { background:var(--bg); color:var(--text); }
+
+/* ── Layout ─────────────────────────────────────────────────── */
+#root{display:flex;width:100%;height:100%;}
+#map-wrap{flex:1;position:relative;overflow:hidden;background:var(--bg);}
+#map-svg{width:100%;height:100%;display:block;transition:background .3s;}
+
+/* ── Panel ──────────────────────────────────────────────────── */
+#panel{
+  width:272px;flex-shrink:0;background:var(--bg2);
+  border-left:2px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:background .3s, border-color .3s;
+}
+#ph{padding:16px 18px 12px;border-bottom:2px solid var(--border);}
+#ph h3{font-size:14px;font-weight:800;color:var(--text);margin-bottom:2px;}
+#ph p{font-size:10px;color:var(--text3);}
+
+/* Stats */
+#stats{display:flex;gap:7px;padding:10px 16px;border-bottom:2px solid var(--border);}
+.sb{flex:1;background:var(--bg3);border:1.5px solid var(--border);
+    border-radius:10px;padding:9px 7px;text-align:center;transition:background .3s;}
+.sn{font-size:17px;font-weight:800;color:#FF6B6B;line-height:1;}
+.sl{font-size:8px;color:var(--text3);font-weight:700;text-transform:uppercase;
+    letter-spacing:.6px;margin-top:2px;}
+
+/* Filters */
+#filters{display:flex;gap:5px;padding:8px 16px;border-bottom:2px solid var(--border);}
+.fb{flex:1;padding:6px 0;border:1.5px solid var(--border);border-radius:8px;
+    background:transparent;color:var(--text3);font-size:9px;font-weight:700;
+    cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:all .15s;}
+.fb.on{background:#FF6B6B;border-color:#FF6B6B;color:#fff;}
+.fb:hover:not(.on){border-color:var(--text2);color:var(--text2);}
+
+/* Task list */
+#tlist{flex:1;overflow-y:auto;padding:7px 10px;}
+#tlist::-webkit-scrollbar{width:3px;}
+#tlist::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+.tc{background:var(--bg3);border:1.5px solid var(--border);
+    border-radius:12px;padding:11px 13px;margin-bottom:7px;
+    cursor:pointer;transition:all .15s;}
+.tc:hover{border-color:#FF6B6B44;background:var(--bg2);}
+.tc.sel{border-color:#FF6B6B;background:var(--bg2);}
+.tc-cat{font-size:8px;font-weight:800;color:#FF6B6B;text-transform:uppercase;
+        letter-spacing:.7px;margin-bottom:2px;}
+.tc-title{font-size:12px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:4px;}
+.tc-price{font-size:13px;font-weight:800;color:#FF6B6B;margin-bottom:3px;}
+.tc-meta{font-size:9px;color:var(--text3);margin-bottom:2px;}
+.tc-dist{font-size:9px;color:#4ECDC4;font-weight:700;margin-top:3px;}
+.b-open{display:inline-block;background:#DCFCE7;color:#16A34A;
+  border:1px solid #BBF7D0;border-radius:20px;
+  padding:1px 8px;font-size:8px;font-weight:800;margin-top:3px;}
+.b-ip{display:inline-block;background:#FEF3C7;color:#D97706;
+  border:1px solid #FDE68A;border-radius:20px;
+  padding:1px 8px;font-size:8px;font-weight:800;margin-top:3px;}
+
+/* View button */
+#vbtn{display:none;margin:0 10px 10px;padding:11px 0;
+  background:linear-gradient(135deg,#FF6B6B,#FF8E53);
+  color:#fff;border:none;border-radius:12px;font-size:13px;
+  font-weight:800;cursor:pointer;transition:filter .15s;}
+#vbtn:hover{filter:brightness(1.08);}
+
+/* Theme toggle button */
+#themeBtn{
+  margin:6px 10px 0;padding:8px 0;
+  background:var(--bg3);color:var(--text2);
+  border:1.5px solid var(--border);border-radius:10px;
+  font-size:11px;font-weight:700;cursor:pointer;
+  transition:all .15s;
+}
+#themeBtn:hover{border-color:#FF6B6B;color:#FF6B6B;}
+
+/* Tooltip */
+#tip{position:absolute;pointer-events:none;
+  background:var(--bg2);border:2px solid #FF6B6B44;
+  border-radius:14px;padding:13px 15px;
+  min-width:220px;max-width:260px;
+  box-shadow:0 12px 40px var(--shadow);
+  display:none;z-index:50;transition:background .3s;}
+.t-cat{font-size:8px;font-weight:800;color:#FF6B6B;
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px;}
+.t-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.t-price{font-size:15px;font-weight:800;color:#FF6B6B;margin-bottom:3px;}
+.t-addr{font-size:10px;color:var(--text3);margin-bottom:2px;}
+.t-dist{font-size:10px;color:#4ECDC4;font-weight:700;margin-top:3px;}
+
+/* Legend */
+#leg{position:absolute;bottom:14px;left:14px;z-index:20;
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+  box-shadow:0 4px 16px var(--shadow);transition:background .3s;}
+.li{display:flex;align-items:center;gap:7px;
+    font-size:10px;color:var(--text2);margin:3px 0;}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* Zoom */
+#zctrl{position:absolute;bottom:14px;right:14px;z-index:20;
+       display:flex;flex-direction:column;gap:3px;}
+.zb{width:32px;height:32px;background:var(--bg2);
+    border:1.5px solid var(--border);border-radius:8px;
+    color:var(--text2);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s;}
+.zb:hover{border-color:#FF6B6B;color:#FF6B6B;}
+</style>
+</head>
+<body>
+<div id="root">
+
+<!-- MAP AREA -->
+<div id="map-wrap">
+<svg id="map-svg" viewBox="0 0 760 600" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <radialGradient id="bgr" cx="45%" cy="45%">
+      <stop id="bg-stop1" offset="0%"   stop-color="#EEF4FA"/>
+      <stop id="bg-stop2" offset="100%" stop-color="#E4EDF6"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect id="map-bg" width="760" height="600" fill="url(#bgr)"/>
+
+  <!-- Grid lines -->
+  <g id="grid-lines" stroke="#E2E8F0" stroke-width=".5">
+    <line x1="0" y1="150" x2="760" y2="150"/>
+    <line x1="0" y1="300" x2="760" y2="300"/>
+    <line x1="0" y1="450" x2="760" y2="450"/>
+    <line x1="190" y1="0" x2="190" y2="600"/>
+    <line x1="380" y1="0" x2="380" y2="600"/>
+    <line x1="570" y1="0" x2="570" y2="600"/>
+  </g>
+
+  <!-- Arabian Sea -->
+  <path id="sea" d="M154,388 Q175,428 210,453 Q240,468 268,473
+       Q295,477 320,470 Q348,460 365,445
+       Q385,430 400,413 L420,600 L130,600 Z"
+    fill="#C8DCF0" stroke="#B5CDE8" stroke-width="1"/>
+  <text x="245" y="505" font-size="9" fill="#93C5FD" font-weight="500"
+        text-anchor="middle" font-style="italic">Arabian Sea</text>
+
+  <!-- Pakistan land -->
+  <path id="pakistan" d="
+    M270,45 L295,40 L322,38 L348,42 L370,50
+    L388,62 L405,58 L428,66 L445,80
+    L453,98 L458,116 L450,133 L442,150
+    L455,164 L468,177 L463,196 L452,210
+    L438,224 L432,242 L436,260 L443,278
+    L434,295 L421,308 L407,320 L392,330
+    L379,344 L365,358 L350,372 L335,382
+    L318,388 L303,378 L289,364 L278,350
+    L264,337 L250,323 L237,308 L223,293
+    L213,277 L206,260 L202,242 L199,224
+    L191,209 L181,196 L170,181 L162,165
+    L157,148 L154,130 L158,112 L164,96
+    L175,83 L188,72 L205,63 L222,55
+    L243,48 L258,45 Z"
+    fill="#E8EFF5" stroke="#CBD5E1" stroke-width="1.5"
+    stroke-linejoin="round" filter="url(#shadow)"/>
+
+  <!-- Province borders -->
+  <g id="provinces" stroke="#C4D0DE" stroke-width="1" stroke-dasharray="5 4" fill="none">
+    <path d="M295,100 Q315,140 325,168 Q322,195 318,215"/>
+    <path d="M272,272 Q290,295 305,318 Q318,336 330,352"/>
+    <path d="M213,185 Q232,215 248,248 Q260,275 268,295"/>
+  </g>
+
+  <!-- Rivers -->
+  <g stroke="#93C5FD" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7">
+    <path d="M352,80 Q344,118 331,158 Q320,195 308,230
+             Q298,260 287,288 Q278,310 268,335"/>
+    <path d="M318,130 Q310,162 304,194 Q298,222 294,250"/>
+  </g>
+
+  <!-- City markers -->
+  <g id="cities">
+    <circle cx="322" cy="138" r="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="330" y="143" font-size="10" fill="#64748B" font-weight="600">Islamabad</text>
+    <circle cx="340" cy="200" r="3.5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="348" y="205" font-size="10" fill="#64748B" font-weight="600">Lahore</text>
+    <circle cx="243" cy="340" r="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="251" y="345" font-size="10" fill="#64748B" font-weight="600">Karachi</text>
+    <circle cx="292" cy="104" r="3" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="300" y="109" font-size="10" fill="#64748B" font-weight="600">Peshawar</text>
+    <circle cx="318" cy="152" r="2.5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="326" y="157" font-size="10" fill="#64748B" font-weight="600">Rawalpindi</text>
+    <circle cx="199" cy="262" r="3" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="207" y="267" font-size="10" fill="#64748B" font-weight="600">Quetta</text>
+    <circle cx="323" cy="187" r="2.5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="331" y="192" font-size="10" fill="#64748B" font-weight="600">Faisalabad</text>
+    <circle cx="303" cy="234" r="2.5" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="311" y="239" font-size="10" fill="#64748B" font-weight="600">Multan</text>
+  </g>
+
+  <g id="pins"></g>
+  <g id="user"></g>
+</svg>
+
+<div id="tip">
+  <div class="t-cat"   id="t-cat"></div>
+  <div class="t-title" id="t-title"></div>
+  <div class="t-price" id="t-price"></div>
+  <div class="t-addr"  id="t-addr"></div>
+  <div class="t-dist"  id="t-dist" style="display:none"></div>
+</div>
+
+<div id="leg">
+  <div class="li"><span class="ld" style="background:#22C55E"></span>Open Task</div>
+  <div class="li"><span class="ld" style="background:#F59E0B"></span>In Progress</div>
+  <div class="li"><span class="ld" style="background:#94A3B8"></span>Done</div>
+  <div class="li"><span class="ld" style="background:#FF6B6B"></span>You</div>
+</div>
+
+<div id="zctrl">
+  <div class="zb" onclick="zoomMap(1.2)">+</div>
+  <div class="zb" onclick="zoomMap(0.83)">−</div>
+  <div class="zb" onclick="resetView()" style="font-size:12px;font-weight:700;">⌂</div>
+</div>
+
+</div><!-- map-wrap -->
+
+<!-- SIDEBAR PANEL -->
+<div id="panel">
+  <div id="ph">
+    <h3>🗺  Task Map</h3>
+    <p>All tasks across Pakistan</p>
+  </div>
+  <div id="stats">
+    <div class="sb"><div class="sn" id="s-open">0</div><div class="sl">Open</div></div>
+    <div class="sb"><div class="sn" id="s-total" style="color:var(--text2)">0</div><div class="sl">Total</div></div>
+    <div class="sb"><div class="sn" id="s-near" style="color:#4ECDC4;font-size:14px">—</div><div class="sl">Nearest km</div></div>
+  </div>
+  <div id="filters">
+    <button class="fb on" id="fb-all"  onclick="setFilter('ALL')">All</button>
+    <button class="fb"    id="fb-open" onclick="setFilter('OPEN')">Open</button>
+    <button class="fb"    id="fb-ip"   onclick="setFilter('IN_PROGRESS')">Active</button>
+  </div>
+  <div id="tlist"></div>
+  <button id="vbtn" onclick="doView()">View &amp; Bid on Task →</button>
+  <button id="themeBtn" onclick="toggleTheme()">🌙 Dark Mode</button>
+</div>
+
+</div><!-- root -->
+
+<script>
+// ── Coordinate mapping ─────────────────────────────────────────
+var L0=23.5, L1=37.5, G0=60.5, G1=77.5;
+var SX=30, SY=30, SW=700, SH=540;
+
+function ll2s(lat,lng){
+  return{
+    x: SX+(lng-G0)/(G1-G0)*SW,
+    y: SY+(1-(lat-L0)/(L1-L0))*SH
+  };
+}
+
+// ── State ──────────────────────────────────────────────────────
+var tasks=[], selId=null, filt='ALL';
+var uLat=0, uLng=0;
+var vx=0, vy=0, vw=760, vh=600;
+var dragging=false, dx0=0, dy0=0, vx0=0, vy0=0;
+var isDark=false;
+var svg=document.getElementById('map-svg');
+
+// ── Called from Java ───────────────────────────────────────────
+function loadTasks(json){
+  tasks=JSON.parse(json);
+  document.getElementById('s-total').textContent=tasks.length;
+  document.getElementById('s-open').textContent=
+    tasks.filter(function(t){return t.status==='OPEN';}).length;
+  drawPins(); renderList();
+}
+
+function setUserLocation(lat,lng,name){
+  uLat=lat; uLng=lng;
+  var p=ll2s(lat,lng);
+  document.getElementById('user').innerHTML=
+    '<circle cx="'+p.x+'" cy="'+p.y+'" r="14" fill="#FF6B6B" opacity=".12">'
+    +'<animate attributeName="r" values="10;18;10" dur="2s" repeatCount="indefinite"/>'
+    +'<animate attributeName="opacity" values=".14;0;.14" dur="2s" repeatCount="indefinite"/>'
+    +'</circle>'
+    +'<circle cx="'+p.x+'" cy="'+p.y+'" r="6" fill="#FF6B6B" opacity=".2"/>'
+    +'<circle cx="'+p.x+'" cy="'+p.y+'" r="4.5" fill="#FF6B6B" stroke="white" stroke-width="2"/>'
+    +'<text x="'+(p.x+9)+'" y="'+(p.y+4)+'" font-size="9" fill="#FF6B6B"'
+    +' font-weight="800">'+esc(name)+'</text>';
+  panTo(p.x,p.y,vw/2,vh/2);
+  recalc(); renderList();
+}
+
+// ── Draw pins ──────────────────────────────────────────────────
+function drawPins(){
+  var buf='';
+  tasks.forEach(function(t){
+    if(!t.lat||!t.lng||(t.lat===0&&t.lng===0)) return;
+    var p=ll2s(t.lat,t.lng);
+    var col=t.status==='OPEN'?'#22C55E':t.status==='IN_PROGRESS'?'#F59E0B':'#94A3B8';
+    var sel=(t.id===selId);
+    buf+='<g data-id="'+t.id+'" style="cursor:pointer"'
+      +' transform="translate('+p.x+','+p.y+')"'
+      +' onmouseenter="showTip(event,'+t.id+')" onmouseleave="hideTip()"'
+      +' onclick="selTask('+t.id+')"'+(sel?' filter="url(#glow)"':'')+'>'
+      +'<g style="transition:transform .15s"'
+      +(sel?' transform="scale(1.35)"':'')+'>'
+      +'<path d="M0,-20 C-9,-28 -11,-9 0,4 C11,-9 9,-28 0,-20 Z"'
+      +' fill="'+col+'" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>'
+      +'<circle cx="0" cy="-15" r="4" fill="rgba(255,255,255,0.9)"/>'
+      +'</g></g>';
+  });
+  document.getElementById('pins').innerHTML=buf;
+}
+
+// ── Sidebar list ───────────────────────────────────────────────
+function renderList(){
+  var list=tasks.filter(function(t){
+    return filt==='ALL'||t.status===filt;
+  });
+  if(uLat!==0){
+    list.sort(function(a,b){return(a.distKm||9999)-(b.distKm||9999);});
+  } else {
+    list.sort(function(a,b){
+      if(a.status==='OPEN'&&b.status!=='OPEN') return -1;
+      if(a.status!=='OPEN'&&b.status==='OPEN') return 1;
+      return 0;
+    });
+  }
+  var html='';
+  list.forEach(function(t){
+    var dist=t.distKm>0?'<div class="tc-dist">📍 '+t.distKm.toFixed(1)+' km</div>':'';
+    var badge=t.status==='OPEN'?'<span class="b-open">Open</span>':
+              t.status==='IN_PROGRESS'?'<span class="b-ip">Active</span>':'';
+    html+='<div class="tc'+(t.id===selId?' sel':'')+'" onclick="selTask('+t.id+')">'
+      +'<div class="tc-cat">'+esc(t.category||'')+'</div>'
+      +'<div class="tc-title">'+esc(t.title)+'</div>'
+      +'<div class="tc-price">Rs. '+Number(t.budget).toLocaleString()+'</div>'
+      +'<div class="tc-meta">📍 '+esc(t.address||'')+'</div>'
+      +'<div class="tc-meta">👤 '+esc(t.poster||'')+'</div>'
+      +dist+badge+'</div>';
+  });
+  document.getElementById('tlist').innerHTML=html||
+    '<div style="color:var(--text3);padding:20px;text-align:center;font-size:11px">No tasks</div>';
+}
+
+function selTask(id){
+  selId=id; drawPins(); renderList();
+  var t=tasks.find(function(x){return x.id===id;});
+  if(t&&t.lat&&t.lng){ var p=ll2s(t.lat,t.lng); panTo(p.x,p.y,vw/2,vh/2); }
+  document.getElementById('vbtn').style.display=
+    (t&&t.status==='OPEN')?'block':'none';
+}
+function doView(){if(selId) alert('openTask:'+selId);}
+
+function setFilter(f){
+  filt=f;
+  ['all','open','ip'].forEach(function(k){
+    document.getElementById('fb-'+k).classList.remove('on');
+  });
+  var m={ALL:'all',OPEN:'open',IN_PROGRESS:'ip'};
+  if(m[f]) document.getElementById('fb-'+m[f]).classList.add('on');
+  renderList();
+}
+
+// ── Tooltip ────────────────────────────────────────────────────
+function showTip(e,id){
+  var t=tasks.find(function(x){return x.id===id;});
+  if(!t) return;
+  document.getElementById('t-cat').textContent=t.category||'Other';
+  document.getElementById('t-title').textContent=t.title;
+  document.getElementById('t-price').textContent='Rs. '+Number(t.budget).toLocaleString();
+  document.getElementById('t-addr').textContent=t.address||'';
+  var dd=document.getElementById('t-dist');
+  if(t.distKm>0){dd.textContent='📍 '+t.distKm.toFixed(1)+' km away';dd.style.display='block';}
+  else dd.style.display='none';
+  var tip=document.getElementById('tip');
+  tip.style.display='block';
+  posTip(e);
+}
+function posTip(e){
+  var w=document.getElementById('map-wrap').getBoundingClientRect();
+  var tip=document.getElementById('tip');
+  var x=e.clientX-w.left+14, y=e.clientY-w.top-10;
+  if(x+265>w.width)  x=e.clientX-w.left-275;
+  if(y+160>w.height) y=e.clientY-w.top-170;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function hideTip(){document.getElementById('tip').style.display='none';}
+
+// ── Smooth drag + zoom ─────────────────────────────────────────
+svg.addEventListener('mousedown',function(e){
+  if(e.target.closest&&e.target.closest('[data-id]')) return;
+  dragging=true; dx0=e.clientX; dy0=e.clientY; vx0=vx; vy0=vy;
+  svg.style.cursor='grabbing';
+});
+document.addEventListener('mousemove',function(e){
+  if(!dragging) return;
+  var rect=svg.getBoundingClientRect();
+  vx=vx0-(e.clientX-dx0)*vw/rect.width;
+  vy=vy0-(e.clientY-dy0)*vh/rect.height;
+  clamp(); applyView();
+});
+document.addEventListener('mouseup',function(){
+  dragging=false; svg.style.cursor='grab';
+});
+svg.style.cursor='grab';
+
+svg.addEventListener('wheel',function(e){
+  e.preventDefault();
+  var f=e.deltaY<0?1.15:0.87;
+  // Zoom toward mouse position
+  var rect=svg.getBoundingClientRect();
+  var mx=(e.clientX-rect.left)/rect.width*vw+vx;
+  var my=(e.clientY-rect.top)/rect.height*vh+vy;
+  vw=Math.max(250,Math.min(1100,vw/f));
+  vh=vw*600/760;
+  vx=mx-((e.clientX-rect.left)/rect.width*vw);
+  vy=my-((e.clientY-rect.top)/rect.height*vh);
+  clamp(); applyView();
+},{passive:false});
+
+function zoomMap(f){
+  var cx=vx+vw/2, cy=vy+vh/2;
+  vw=Math.max(250,Math.min(1100,vw/f));
+  vh=vw*600/760; vx=cx-vw/2; vy=cy-vh/2;
+  clamp(); applyView();
+}
+function panTo(px,py,cx,cy){
+  vx=px-cx*(vw/760); vy=py-cy*(vh/600);
+  clamp(); applyView();
+}
+function resetView(){vx=0;vy=0;vw=760;vh=600;applyView();}
+function clamp(){
+  if(vx<-80) vx=-80; if(vy<-60) vy=-60;
+  if(vx+vw>840) vx=840-vw; if(vy+vh>680) vy=680-vh;
+}
+function applyView(){svg.setAttribute('viewBox',vx+' '+vy+' '+vw+' '+vh);}
+
+// ── Distances ──────────────────────────────────────────────────
+function recalc(){
+  if(!uLat) return;
+  var best=null,bestD=Infinity;
+  tasks.forEach(function(t){
+    if(!t.lat||!t.lng) return;
+    var d=hav(uLat,uLng,t.lat,t.lng);
+    t.distKm=d;
+    if(t.status==='OPEN'&&d<bestD){bestD=d;best=t;}
+  });
+  if(best) document.getElementById('s-near').textContent=bestD.toFixed(0);
+}
+function hav(a,b,c,d){
+  var R=6371,dr=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180;
+  var x=Math.sin(dr/2)*Math.sin(dr/2)
+       +Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)
+       *Math.sin(dl/2)*Math.sin(dl/2);
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+// ── Dark/light theme toggle ────────────────────────────────────
+function toggleTheme(){
+  isDark=!isDark;
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('themeBtn').textContent=isDark?'☀️ Light Mode':'🌙 Dark Mode';
+  updateMapColors();
+}
+
+function updateMapColors(){
+  var land=isDark?'#1a1a24':'#E8EFF5';
+  var sea =isDark?'#0d0d1a':'#C8DCF0';
+  var seaStroke=isDark?'#14142a':'#B5CDE8';
+  var border=isDark?'#2a2a42':'#CBD5E1';
+  var river=isDark?'#1e2a42':'#93C5FD';
+  var riverText=isDark?'#1e2a42':'#93C5FD';
+  var cityFill=isDark?'#14141e':'#DBEAFE';
+  var cityStroke=isDark?'#1e2a42':'#93C5FD';
+  var cityText=isDark?'#3a3a5e':'#64748B';
+  var grid=isDark?'#14141c':'#E2E8F0';
+  var bgS1=isDark?'#111118':'#EEF4FA';
+  var bgS2=isDark?'#0d0d14':'#E4EDF6';
+  var seaText=isDark?'#1e2a42':'#93C5FD';
+
+  document.getElementById('bg-stop1').setAttribute('stop-color',bgS1);
+  document.getElementById('bg-stop2').setAttribute('stop-color',bgS2);
+  document.getElementById('pakistan').setAttribute('fill',land);
+  document.getElementById('pakistan').setAttribute('stroke',border);
+  document.getElementById('sea').setAttribute('fill',sea);
+  document.getElementById('sea').setAttribute('stroke',seaStroke);
+  document.querySelectorAll('#provinces path').forEach(function(p){p.setAttribute('stroke',isDark?'#22223a':'#C4D0DE');});
+  document.querySelectorAll('#grid-lines line').forEach(function(l){l.setAttribute('stroke',grid);});
+  document.querySelectorAll('#cities circle').forEach(function(c){
+    c.setAttribute('fill',cityFill); c.setAttribute('stroke',cityStroke);
+  });
+  document.querySelectorAll('#cities text').forEach(function(t){t.setAttribute('fill',cityText);});
+  document.querySelectorAll('#map-svg text[font-style="italic"]').forEach(function(t){t.setAttribute('fill',seaText);});
+}
+
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function openTask(id){alert('openTask:'+id);}
+</script>
+</body>
+</html>
